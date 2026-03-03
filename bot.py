@@ -1,3 +1,5 @@
+print("Bot file started")
+
 import discord
 from discord.ext import commands
 import yt_dlp
@@ -78,3 +80,4 @@ async def play(ctx, url):
 
 
 bot.run(os.getenv("TOKEN"))
+
