@@ -32,16 +32,19 @@ async def on_ready():
 @bot.command()
 async def join(ctx):
     if not ctx.author.voice:
-        await ctx.send("You are not in a voice channel.")
+        await ctx.send("Join a voice channel first.")
         return
 
-    channel = ctx.author.voice.channel
+    if ctx.voice_client is not None:
+        if ctx.voice_client.channel == ctx.author.voice.channel:
+            await ctx.send("Already connected.")
+            return
+        else:
+            await ctx.voice_client.move_to(ctx.author.voice.channel)
+            return
 
-    if ctx.voice_client:
-        await ctx.voice_client.disconnect()
-
-    await channel.connect()
-    await ctx.send("Connected to voice channel.")
+    await ctx.author.voice.channel.connect()
+    await ctx.send("Connected.")
 
 
 @bot.command()
@@ -80,4 +83,5 @@ async def play(ctx, url):
 
 
 bot.run(os.getenv("TOKEN"))
+
 
